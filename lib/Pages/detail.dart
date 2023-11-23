@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import './storage.dart' as store;
+import '../storage.dart' as store;
 
 class Page extends StatefulWidget {
   Page({super.key});
@@ -24,7 +24,7 @@ class _PageState extends State<Page> {
     return Scaffold(
       appBar: AppBar(title: Text('여기에 주소 넣으면 짤릴듯'),),
       body: Text(
-        context.watch<store.ArticleStorage>().reviewById.toString()
+        context.watch<store.ReviewStorage>().reviewById.toString()
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(

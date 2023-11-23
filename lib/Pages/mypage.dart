@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import './card.dart' as cards;
+import 'package:provider/provider.dart';
+import '../storage.dart' as store;
 
 class Page extends StatelessWidget {
   const Page({super.key});
@@ -10,17 +12,24 @@ class Page extends StatelessWidget {
       appBar: AppBar(
         title: const Text('마이페이지'),
       ),
-      body: ListView(
-        children: const [
-          ProfileHeader(),
-          Text('작성한 리뷰', style: TextStyle(fontSize: 20)),
-          cards.Cards(),
-          cards.Cards(),
-          cards.Cards(),
-          cards.Cards(),
-          cards.Cards(),
-        ],
-      )
+      body: RefreshIndicator(
+          child: ListView(
+            children: [
+              const ProfileHeader(),
+              Text('작성한 리뷰', style: TextStyle(fontSize: 20)),
+              ListView.builder(itemBuilder: (context, index){
+                return cards.Cards(index: index, info: context.watch<store.ReviewStorage>().myReviews[index]);
+              },
+                itemCount: context.watch<store.ReviewStorage>().myReviews.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+              ),
+            ],
+          ),
+          onRefresh: () {
+            // get any new data when pulled down
+            return context.read<store.ReviewStorage>().getMyReviews();
+          },)
     );
   }
 }

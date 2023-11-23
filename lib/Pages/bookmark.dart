@@ -13,11 +13,12 @@ class Page extends StatelessWidget {
       ),
       body: ListView(
         children: const [
-          cards.Cards(),
-          cards.Cards(),
-          cards.Cards(),
-          cards.Cards(),
-          cards.Cards(),
+          cards.SuccCards(),
+          cards.SuccCards(),
+          cards.SuccCards(),
+          cards.SuccCards(),
+          cards.SuccCards(),
+          cards.SuccCards(),
         ],
       ),
       floatingActionButton: form.FormButton(),
