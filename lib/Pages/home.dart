@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../storage.dart' as store;
-import './form.dart' as form;
-import './card.dart' as cards;
+import '../Components/form.dart' as form;
+import '../Components/card.dart' as cards;
 
 class Page extends StatelessWidget {
   const Page({super.key});

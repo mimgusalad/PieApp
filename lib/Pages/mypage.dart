@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './card.dart' as cards;
+import '../Components/card.dart' as cards;
 import 'package:provider/provider.dart';
 import '../storage.dart' as store;
 

@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
+import 'package:get/get.dart';
 import './style.dart' as style;
 import './storage.dart' as store;
-import 'dart:convert';
-import 'dart:io';
 import 'Pages/home.dart' as home;
 import 'Pages/bookmark.dart' as bookmark;
 import 'Pages/mypage.dart' as profile;
 import 'Pages/succ.dart' as succ;
-import 'Pages/message.dart' as message;
+import 'Pages/chat.dart' as message;
+import 'Components/message.dart';
 
-void main() {
+
+const APP_ID = '4E4C060D-17A6-4CC6-84EA-47D1C87A1F43';
+const API_TOKEN = '1d5127c511ce2b3d1e1f27bde93727381958dc63';
+
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  SendbirdChat.init(appId: APP_ID);
+  await SendbirdChat.connect('test_id2', accessToken: API_TOKEN);
+
   runApp(
     MultiProvider(
         providers: [
@@ -18,11 +28,22 @@ void main() {
           ChangeNotifierProvider(create: (c)=>store.ReviewStorage()),
           ChangeNotifierProvider(create: (c)=>store.SuccStorage()),
         ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         theme: style.theme,
-        home: MyApp()
+        home: MyApp(),
+        getPages: [
+          // GetPage(name: '/home', page: ()=> home.Page()),
+          // GetPage(name: '/bookmark', page: ()=> bookmark.Page()),
+          // GetPage(name: '/profile', page: ()=> profile.Page()),
+          // GetPage(name: '/succ', page: ()=> succ.Page()),
+          // GetPage(name: '/message', page: ()=> message.ChannelList()),
+          GetPage(
+            name: '/group_channel/:channel_url',
+            page: () => const Message(),
+          ),
+        ],
       )
-    )
+    ),
   );
 }
 
@@ -45,7 +66,6 @@ class _MyAppState extends State<MyApp> {
     context.read<store.SuccStorage>().getArticles();
     context.read<store.ReviewStorage>().getMyReviews();
   }
-  
   // 여기까지 함수 등
   @override
   Widget build(BuildContext context) {
@@ -66,12 +86,12 @@ class _MyAppState extends State<MyApp> {
           BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined), label: '마이페이지'),
         ],
       ),
-      body: [
-        const home.Page(),
-        const succ.Page(),
-        const bookmark.Page(),
-        message.Chat(),
-        const profile.Page(),
+      body: const [
+        home.Page(),
+        succ.Page(),
+        bookmark.Page(),
+        message.ChannelList(),
+        profile.Page(),
       ][tab]
     );
   }

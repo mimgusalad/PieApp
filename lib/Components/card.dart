@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../storage.dart' as store;
-import './detail.dart' as detail;
+import 'detail.dart' as detail;
 
 class Cards extends StatelessWidget {
   const Cards({super.key, this.index, this.info});
