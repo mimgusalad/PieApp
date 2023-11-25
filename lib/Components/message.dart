@@ -4,6 +4,8 @@ import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../Pages/chat.dart' as message;
 
+const DEFAULT_PROFILE_URL = 'https://i.namu.wiki/i/c721JBCTktfPQORgQl2yMtmhJEQ-CLrydaN6qeO0BtISaAr6sVJ3a1b6PJb2ymRrmOPBFVniqgcUm5tHG2Te4Ijsdd0GonglRJI7HYFdqwy8vzrsuNQKX_3XPsKxg8u9K2qcVSgsx-WIqQaI60dVfA.webp';
+
 class Message extends StatefulWidget {
   const Message({super.key});
 
@@ -159,56 +161,25 @@ class _MessageState extends State<Message> {
               ListTile(
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Expanded(
                       child:
                           // 보낸 사람이 현재 사용자면 오른쪽에 보여주고 아니면 왼쪽에 보여주는거
                           message.sender!.isCurrentUser ? Container(
                             //내가 보낸거
-                            alignment: Alignment.centerRight,
-                            child: _bubble(message.message, Colors.black26, Colors.white),
+                            alignment: Alignment.bottomRight,
+                            child: _myMessage(message.message, message.createdAt, unreadMembers.isNotEmpty ? '1' : ''),
                           ) : Container(
                             // 상대방이 보낸거
                             alignment: Alignment.centerLeft,
-                            child: _bubble(message.message, Colors.black26, Colors.white),
+                            child: _hisMessage(
+                                message.message,
+                                message.sender!.profileUrl.isNotEmpty
+                                    ? message.sender?.profileUrl
+                                    : DEFAULT_PROFILE_URL
+                                , message.createdAt),
                           ),
-                    ),
-
-                    // 톡 안 읽은 사람 수 보여주는거
-                    if (message.sender != null && message.sender!.isCurrentUser)
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: Text(unreadMembers.isNotEmpty
-                              ? '${unreadMembers.length}'
-                              : '',
-                          style: const TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.green,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                subtitle: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // 상대방 프로필 사진만 보여주는거
-                    message.sender!.isCurrentUser ? Container()
-                    : CircleAvatar(
-                      radius: 12,
-                      backgroundImage: NetworkImage(
-                          message.sender?.profileUrl ?? ''),
-                    ),
-
-                    // 톡 보낸 날짜 오른쪽 아래에 보여주는거
-                    Container(
-                      margin: const EdgeInsets.only(left: 16),
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        DateTime.fromMillisecondsSinceEpoch(message.createdAt)
-                            .toString().substring(11, 16),
-                        style: const TextStyle(fontSize: 12.0),
-                      ),
                     ),
                   ],
                 ),
@@ -220,10 +191,86 @@ class _MessageState extends State<Message> {
     );
   }
 
+  Widget _hisMessage(
+      String? message,
+      String? profileUrl,
+      int createdAt,
+      ){
+    return Container(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 상대방 프로필 사진만 보여주는거
+          CircleAvatar(
+            radius: 20,
+            backgroundImage: NetworkImage(
+                profileUrl ?? ''),
+          ),
+          const SizedBox(width: 10),
+          // 톡 내용 보여주는거
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              // 톡 내용 보여주는거
+              _bubble(message, Colors.grey, Colors.black),
+              // 톡 보낸 날짜 오른쪽 아래에 보여주는거
+              Container(
+                margin: const EdgeInsets.only(left: 16),
+                alignment: Alignment.centerRight,
+                child: Text(
+                  DateTime.fromMillisecondsSinceEpoch(createdAt)
+                      .toString().substring(11, 16),
+                  style: const TextStyle(fontSize: 12.0),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _myMessage(
+      String? message,
+      int createdAt,
+      String unreadMessageCount,
+      ){
+    return Container(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          // 톡 안 읽은 사람 수 보여주는거
+          Container(
+            alignment: Alignment.centerRight,
+            child: Text(unreadMessageCount,
+              style: const TextStyle(
+                fontSize: 12.0,
+                color: Colors.red,
+              ),
+            ),
+          ),
+          const SizedBox(width: 5),
+          // 톡 보낸 날짜 왼쪽 아래에 보여주는거
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            child: Text(
+              DateTime.fromMillisecondsSinceEpoch(createdAt)
+                  .toString().substring(11, 16),
+              style: const TextStyle(fontSize: 12.0),
+            ),
+          ),
+          // 톡 내용 보여주는거
+          _bubble(message, Colors.black, Colors.white),
+        ],
+      )
+    );
+  }
+
   Widget _bubble(
       String? text, Color backgroundColor, Color textColor
       ){
-
     return Container(
       constraints: BoxConstraints(
         maxWidth: 250,
@@ -231,7 +278,7 @@ class _MessageState extends State<Message> {
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: Text(
         text!,
@@ -274,7 +321,7 @@ class _MessageState extends State<Message> {
     );
   }
 
-  // 메세지 보내는 창
+  // 내가 메세지 입력하는 창, bottombar에 위치
   Widget _messageSender() {
     return Padding(
       padding: const EdgeInsets.all(8.0),

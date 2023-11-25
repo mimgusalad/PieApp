@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 
+const DEFAULT_PROFILE_URL = 'https://i.namu.wiki/i/c721JBCTktfPQORgQl2yMtmhJEQ-CLrydaN6qeO0BtISaAr6sVJ3a1b6PJb2ymRrmOPBFVniqgcUm5tHG2Te4Ijsdd0GonglRJI7HYFdqwy8vzrsuNQKX_3XPsKxg8u9K2qcVSgsx-WIqQaI60dVfA.webp';
+
 class ChannelList extends StatefulWidget {
   const ChannelList({super.key});
 
@@ -66,8 +68,9 @@ class _ChannelListState extends State<ChannelList> {
                               CircleAvatar(
                                 radius: 25,
                                 backgroundImage: NetworkImage(
-                                    channelList[index].members?.first
-                                        .profileUrl ?? ''),
+                                    channelList[index].members.first.profileUrl.isNotEmpty
+                                        ? channelList[index].members.first.profileUrl
+                                        : DEFAULT_PROFILE_URL),
                               ),
                               const SizedBox(width: 15),
                               Column(
