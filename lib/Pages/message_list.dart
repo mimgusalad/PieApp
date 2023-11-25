@@ -41,7 +41,7 @@ class _ChannelListState extends State<ChannelList> {
       body: Column(
         children: [
           Expanded(
-            child: _list(),
+            child: channelList.isEmpty ? Container() : _list(),
           ),
         ],
       ),
@@ -53,7 +53,6 @@ class _ChannelListState extends State<ChannelList> {
     return ListView.builder(
         itemCount: channelList.length,
         itemBuilder: (context, index) {
-          debugPrint('channel members: ${channelList[index].members.first.userId}, ${channelList[index].members.last.userId}');
           final groupChannel = channelList[index];
           return GestureDetector(
               child: Column(
@@ -95,8 +94,11 @@ class _ChannelListState extends State<ChannelList> {
                                             fontSize: 16),
                                       ),
                                       const SizedBox(width: 10),
-                                      Text('${DateTime.fromMillisecondsSinceEpoch(groupChannel.lastMessage!.createdAt).
-                                      toString().substring(11, 16)}'),
+                                      Text(groupChannel.lastMessage != null
+                                          ? DateTime.fromMillisecondsSinceEpoch(groupChannel.lastMessage!.createdAt)
+                                              .toString()
+                                              .substring(11, 16)
+                                          : ''),
                                       // 안 읽은 톡 몇갠지
                                       groupChannel.unreadMessageCount > 0
                                       ? const Icon(Icons.notifications,
