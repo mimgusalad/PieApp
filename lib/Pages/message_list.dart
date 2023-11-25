@@ -50,10 +50,10 @@ class _ChannelListState extends State<ChannelList> {
 
 
   Widget _list() {
-    debugPrint('channelList: ${channelList.length}');
     return ListView.builder(
         itemCount: channelList.length,
         itemBuilder: (context, index) {
+          debugPrint('channel members: ${channelList[index].members.first.userId}, ${channelList[index].members.last.userId}');
           final groupChannel = channelList[index];
           return GestureDetector(
               child: Column(
@@ -72,9 +72,12 @@ class _ChannelListState extends State<ChannelList> {
                               CircleAvatar(
                                 radius: 25,
                                 backgroundImage: NetworkImage(
-                                    channelList[index].members.first.profileUrl.isNotEmpty
-                                        ? channelList[index].members.first.profileUrl
-                                        : DEFAULT_PROFILE_URL),
+                                    groupChannel.members.first.userId != SendbirdChat.currentUser?.userId
+                                        ? groupChannel.members.first.profileUrl.isNotEmpty
+                                        ? groupChannel.members.first.profileUrl : DEFAULT_PROFILE_URL
+                                        : groupChannel.members.last.profileUrl.isNotEmpty
+                                        ? groupChannel.members.last.profileUrl : DEFAULT_PROFILE_URL
+                                ),
                               ),
                               const SizedBox(width: 15),
                               Column(
