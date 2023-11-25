@@ -60,11 +60,15 @@ class _ChannelListState extends State<ChannelList> {
                   children: [
                     ListTile(
                         onTap: () {
-                          Get.toNamed('/group_channel/${groupChannel.channelUrl}')
+                          Get.toNamed('/group_channel/${groupChannel.channelUrl}', arguments:
+                          groupChannel.members?.first.nickname != SendbirdChat.currentUser?.nickname
+                              ? groupChannel.members?.first.nickname ?? ''
+                              : groupChannel.members?.last.nickname ?? '')
                               ?.then((_) => _refresh());
                         },
                         subtitle: Row(
                             children: [
+                              // 상대발 프로필
                               CircleAvatar(
                                 radius: 25,
                                 backgroundImage: NetworkImage(

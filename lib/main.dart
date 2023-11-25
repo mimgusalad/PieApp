@@ -8,7 +8,7 @@ import 'Pages/home.dart' as home;
 import 'Pages/bookmark.dart' as bookmark;
 import 'Pages/mypage.dart' as profile;
 import 'Pages/succ.dart' as succ;
-import 'Pages/chat.dart' as message;
+import 'Pages/chatList.dart' as message;
 import 'Components/message.dart';
 
 
