@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../storage.dart' as store;
+import '../Storage/review_storage.dart';
 import '../Components/form.dart' as form;
 import '../Components/card.dart' as cards;
 
@@ -15,13 +15,18 @@ class Page extends StatelessWidget {
         ),
         body: RefreshIndicator( // pull to refresh
           onRefresh: () {
-            return context.read<store.ReviewStorage>().getReviews(); // get any new data when pulled down
+            return context.read<ReviewStorage>().getReviews(); // get any new data when pulled down
           },
-          child: ListView.builder( // review data
-          itemCount: context.watch<store.ReviewStorage>().reviews.length,
+          child: ListView.separated( // review data
+          itemCount: context.watch<ReviewStorage>().reviews.length,
           itemBuilder:(context, index) {
-            return cards.Cards(index: index, info: context.watch<store.ReviewStorage>().reviews[index]);
-          })),
+            return cards.Cards(index: index, info: context.watch<ReviewStorage>().reviews[index]);
+          },
+          separatorBuilder: (context, index) {
+            return const SizedBox(height: 8);
+          },
+          ),
+        ),
         floatingActionButton: form.FormButton()
     );
   }

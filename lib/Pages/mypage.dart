@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../Components/card.dart' as cards;
 import 'package:provider/provider.dart';
-import '../storage.dart' as store;
+import '../Storage/review_storage.dart' as store;
 
 class Page extends StatelessWidget {
   const Page({super.key});
@@ -17,12 +17,15 @@ class Page extends StatelessWidget {
             children: [
               const ProfileHeader(),
               Text('작성한 리뷰', style: TextStyle(fontSize: 20)),
-              ListView.builder(itemBuilder: (context, index){
+              ListView.separated(itemBuilder: (context, index){
                 return cards.Cards(index: index, info: context.watch<store.ReviewStorage>().myReviews[index]);
               },
                 itemCount: context.watch<store.ReviewStorage>().myReviews.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
+                separatorBuilder: (context, index) {
+                  return const SizedBox(height: 8);
+                },
               ),
             ],
           ),
