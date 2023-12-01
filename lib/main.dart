@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
@@ -9,6 +8,7 @@ import 'Storage/image_storage.dart';
 import 'Storage/review_storage.dart';
 import 'Storage/succ_storage.dart';
 import 'Storage/favorite_storage.dart';
+import 'Storage/user_storage.dart';
 import 'Pages/home.dart' as home;
 import 'Pages/favorite.dart' as bookmark;
 import 'Pages/mypage.dart' as profile;
@@ -18,12 +18,16 @@ import 'Components/message.dart';
 import 'Components/review_detail.dart' as reviewDetail;
 import 'Components/succ_detail.dart' as succDetail;
 import 'package:http/http.dart' as http;
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'Storage/url.dart';
 
-const APP_ID = '4E4C060D-17A6-4CC6-84EA-47D1C87A1F43';
-const API_TOKEN = '1d5127c511ce2b3d1e1f27bde93727381958dc63';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  KakaoSdk.init(
+    nativeAppKey: '${NATIVE_APP_KEY}',
+    javaScriptAppKey: '${JAVASCRIPT_APP_KEY}',
+  );
   SendbirdChat.init(appId: APP_ID);
   // 현재 접속한 사람 userId
   var user = await SendbirdChat.connect('seohyunbin1@naver.com',
@@ -46,6 +50,7 @@ void main() async {
           ChangeNotifierProvider(create: (c) => SuccStorage()),
           ChangeNotifierProvider(create: (c) => ImageStorage()),
           ChangeNotifierProvider(create: (c) => FavoriteStorage()),
+          ChangeNotifierProvider(create: (c) => UserStorage()),
         ],
         child: GetMaterialApp(
           theme: style.theme,
@@ -117,7 +122,7 @@ class _MyAppState extends State<MyApp> {
                 icon: Icon(Icons.account_circle_outlined), label: '마이페이지'),
           ],
         ),
-        body: const [
+        body: [
           home.Page(),
           succ.Page(),
           bookmark.Page(),

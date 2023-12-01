@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../Storage/succ_storage.dart';
+import '../Storage/url.dart';
 
-const DEFAULT_IMAGE = 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg';
 
 class Page extends StatelessWidget {
   const Page({super.key});

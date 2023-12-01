@@ -1,15 +1,22 @@
-class User{
+class UserInfo{
   String name;
   String email;
   String nickname;
+  int userId;
 
-  User({required this.name, required this.email, required this.nickname});
+  UserInfo({
+    required this.name,
+    required this.email,
+    required this.nickname,
+    required this.userId
+  });
 
-  factory User.fromJson(Map<String, dynamic> json){
-    return User(
-        name: json['name'],
-        email: json['email'],
-        nickname: json['nickname']
+  factory UserInfo.fromJson(Map<String, dynamic> json){
+    return UserInfo(
+      name: json['name'],
+      email: json['email'],
+      nickname: json['nickname'],
+      userId: json['userId'],
     );
   }
   @override

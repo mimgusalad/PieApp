@@ -2,8 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
-
-const DEFAULT_PROFILE_URL = 'https://i.namu.wiki/i/c721JBCTktfPQORgQl2yMtmhJEQ-CLrydaN6qeO0BtISaAr6sVJ3a1b6PJb2ymRrmOPBFVniqgcUm5tHG2Te4Ijsdd0GonglRJI7HYFdqwy8vzrsuNQKX_3XPsKxg8u9K2qcVSgsx-WIqQaI60dVfA.webp';
+import '../Storage/url.dart';
 
 class ChannelList extends StatefulWidget {
   const ChannelList({super.key});

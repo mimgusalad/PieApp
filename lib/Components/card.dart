@@ -7,9 +7,7 @@ import '../Storage/review_storage.dart';
 import '../Storage/succ_storage.dart';
 import 'review_detail.dart' as reviewDetail;
 import 'succ_detail.dart' as succDetail;
-
-const DEFAULt_IMAGE_URL =
-    'https://st3.depositphotos.com/23594922/31822/v/450/depositphotos_318221368-stock-illustration-missing-picture-page-for-website.jpg';
+import '../Storage/url.dart';
 
 class Cards extends StatelessWidget {
   const Cards({super.key, this.index, this.info});
@@ -44,7 +42,7 @@ class Cards extends StatelessWidget {
                             Image.network(
                               info['img_url'].isNotEmpty
                                   ? info['img_url'][0]
-                                  : DEFAULt_IMAGE_URL,
+                                  : DEFAULT_IMAGE_URL,
                               width: 120,
                               height: 120,
                               fit: BoxFit.cover,
@@ -155,9 +153,9 @@ class SuccCards extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Image.network(
-                              info['img_url'] != null
+                              info['img_url'].isNotEmpty
                                   ? info['img_url'][0]
-                                  : DEFAULt_IMAGE_URL,
+                                  : DEFAULT_IMAGE_URL,
                               width: 120,
                               height: 120,
                               fit: BoxFit.cover,
