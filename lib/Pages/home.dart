@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../DTO/review.dart';
 import '../Storage/review_storage.dart';
 import '../Components/form.dart' as form;
 import '../Components/card.dart' as cards;
@@ -20,7 +21,8 @@ class Page extends StatelessWidget {
           child: ListView.separated( // review data
           itemCount: context.watch<ReviewStorage>().reviews.length,
           itemBuilder:(context, index) {
-            return cards.Cards(index: index, info: context.watch<ReviewStorage>().reviews[index]);
+            Review review = context.watch<ReviewStorage>().reviews[index];
+            return cards.Cards(index: index, info: review);
           },
           separatorBuilder: (context, index) {
             return const SizedBox(height: 8);

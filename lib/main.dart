@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:pie/Kakao/view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'package:get/get.dart';
 import './style.dart' as style;
+import 'Kakao/kakao_login.dart';
 import 'Storage/image_storage.dart';
 import 'Storage/review_storage.dart';
 import 'Storage/succ_storage.dart';
@@ -28,20 +30,6 @@ void main() async {
     nativeAppKey: '${NATIVE_APP_KEY}',
     javaScriptAppKey: '${JAVASCRIPT_APP_KEY}',
   );
-  SendbirdChat.init(appId: APP_ID);
-  // 현재 접속한 사람 userId
-  var user = await SendbirdChat.connect('seohyunbin1@naver.com',
-      accessToken: API_TOKEN);
-  if (user.nickname.isEmpty) {
-    var res = await http.put(
-        Uri.parse('https://api-$APP_ID.sendbird.com/v3/users/${user.userId}'),
-        headers: {'Content-Type': 'application/json', 'Api-Token': API_TOKEN},
-        body: jsonEncode({
-          // 현재 접속한 사람 닉네임
-          'nickname': '서현빈',
-        }));
-    debugPrint(res.body);
-  }
 
   runApp(
     MultiProvider(
@@ -51,6 +39,7 @@ void main() async {
           ChangeNotifierProvider(create: (c) => ImageStorage()),
           ChangeNotifierProvider(create: (c) => FavoriteStorage()),
           ChangeNotifierProvider(create: (c) => UserStorage()),
+          ChangeNotifierProvider(create: (c)=> MainViewModel(KakaoLogin())),
         ],
         child: GetMaterialApp(
           theme: style.theme,
@@ -70,6 +59,10 @@ void main() async {
             GetPage(
               name: '/group_channel/:channel_url',
               page: () => const Message()),
+            GetPage(
+              name: '/profile',
+              page: () => profile.Page(),
+            )
           ],
         )),
   );
@@ -93,8 +86,8 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     context.read<ReviewStorage>().getReviews();
     context.read<SuccStorage>().getArticles();
-    context.read<ReviewStorage>().getMyReviews();
     context.read<FavoriteStorage>().getMyFavorite();
+    SendbirdChat.init(appId: APP_ID);
   }
 
   // 여기까지 함수 등

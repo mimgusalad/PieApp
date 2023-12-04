@@ -3,22 +3,21 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
+import '../DTO/review.dart';
+import '../DTO/succ.dart';
 import '../Storage/review_storage.dart';
-import '../Storage/succ_storage.dart';
-import 'review_detail.dart' as reviewDetail;
-import 'succ_detail.dart' as succDetail;
 import '../Storage/url.dart';
 
 class Cards extends StatelessWidget {
-  const Cards({super.key, this.index, this.info});
+  Cards({super.key, this.index, required this.info});
 
   final index;
-  final info;
+  Review info;
 
   @override
   Widget build(BuildContext context) {
-    final review = info['review_article'];
-    final _rating = review['rating'] / 2;
+    final review = info.article;
+    final _rating = review.rating! / 2;
     return Center(
       child: Card(
         clipBehavior: Clip.hardEdge,
@@ -40,8 +39,8 @@ class Cards extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Image.network(
-                              info['img_url'].isNotEmpty
-                                  ? info['img_url'][0]
+                              info.img_url.isNotEmpty
+                                  ? info.img_url[0]
                                   : DEFAULT_IMAGE_URL,
                               width: 120,
                               height: 120,
@@ -61,7 +60,7 @@ class Cards extends StatelessWidget {
                                         padding: const EdgeInsets.fromLTRB(
                                             0, 0, 0, 5),
                                         child: Text(
-                                          review['contentTitle'] ??
+                                          review.contentTitle ??
                                               "(제목이 없는 리뷰글)",
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 2,
@@ -72,7 +71,7 @@ class Cards extends StatelessWidget {
                                         padding: const EdgeInsets.fromLTRB(
                                             0, 0, 0, 5),
                                         child: Text(
-                                          review['address'],
+                                          review.address??'',
                                           overflow: TextOverflow.visible,
                                           maxLines: 2,
                                         )),
@@ -80,7 +79,7 @@ class Cards extends StatelessWidget {
                                         padding: const EdgeInsets.fromLTRB(
                                             0, 0, 0, 8),
                                         child: Text(
-                                          review['addressDetail'] ?? '',
+                                          review.addressDetail ?? '',
                                           overflow: TextOverflow.visible,
                                           maxLines: 2,
                                         )),
@@ -108,7 +107,7 @@ class Cards extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            review['contentText'] ?? "(내용이 없는 리뷰글)",
+                            review.contentText ?? "(내용이 없는 리뷰글)",
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                           ),
@@ -126,14 +125,14 @@ class Cards extends StatelessWidget {
 }
 
 class SuccCards extends StatelessWidget {
-  const SuccCards({super.key, this.index, this.info});
+  SuccCards({super.key, this.index, required this.info});
 
   final index;
-  final info;
+  SuccArticle info;
 
   @override
   Widget build(BuildContext context) {
-    final review = info['succession_article'];
+    final review = info.article;
     return Center(
       child: Card(
         clipBehavior: Clip.hardEdge,
@@ -153,8 +152,8 @@ class SuccCards extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Image.network(
-                              info['img_url'].isNotEmpty
-                                  ? info['img_url'][0]
+                              info.img_url!.isNotEmpty
+                                  ? info.img_url[0]
                                   : DEFAULT_IMAGE_URL,
                               width: 120,
                               height: 120,
@@ -174,7 +173,7 @@ class SuccCards extends StatelessWidget {
                                         padding: const EdgeInsets.fromLTRB(
                                             0, 0, 0, 5),
                                         child: Text(
-                                          review['contentTitle'] ??
+                                          review.contentTitle ??
                                               "(제목이 없는 리뷰글)",
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 2,
@@ -185,21 +184,21 @@ class SuccCards extends StatelessWidget {
                                         padding: const EdgeInsets.fromLTRB(
                                             0, 0, 0, 5),
                                         child: Text(
-                                          review['address'],
+                                          review.address??'',
                                           overflow: TextOverflow.visible,
                                           maxLines: 2,
                                         )),
                                     Padding(
                                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
                                         child:Text(
-                                          review['addressDetail'] ?? '',
+                                          review.addressDetail ?? '',
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 2,
                                     )),
                                     Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             0, 0, 0, 5),
-                                        child: Text('작성자: ' + info['userInfo']['nickname'] ?? ''))
+                                        child: Text('작성자: ${info.user?.nickname}' ?? ''))
                                   ],
                                 )),
                           ],
@@ -210,7 +209,7 @@ class SuccCards extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            review['contentText'] ?? "(내용이 없는 리뷰글)",
+                            review.contentText ?? "(내용이 없는 리뷰글)",
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                           ),

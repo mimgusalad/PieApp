@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pie/DTO/succ.dart';
 import 'package:http/http.dart' as http;
-import '../DTO/user.dart';
+import '../DTO/user_info.dart';
 import 'url.dart';
 
 class SuccStorage extends ChangeNotifier{

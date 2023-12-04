@@ -1,8 +1,8 @@
-import 'package:pie/DTO/user.dart';
+import 'package:pie/DTO/user_info.dart';
 
 class SuccArticle{
   final succession_article article;
-  final List<String>? img_url;
+  final List<dynamic> img_url;
   final UserInfo? user;
 
   SuccArticle({

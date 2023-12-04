@@ -11,6 +11,8 @@ class ChannelList extends StatefulWidget {
   State<ChannelList> createState() => _ChannelListState();
 }
 
+
+
 class _ChannelListState extends State<ChannelList> {
   late GroupChannelCollection collection;
   bool hasMore = false;
@@ -21,6 +23,7 @@ class _ChannelListState extends State<ChannelList> {
   initState() {
     // TODO: implement initStat
     super.initState();
+
     collection = GroupChannelCollection(
       query: GroupChannelListQuery()
         ..order = GroupChannelListQueryOrder.latestLastMessage

@@ -1,8 +1,10 @@
+import 'dart:ffi';
+
 class UserInfo{
-  String name;
-  String email;
-  String nickname;
-  int userId;
+  String? name;
+  String? email;
+  String? nickname;
+  int? userId;
 
   UserInfo({
     required this.name,
