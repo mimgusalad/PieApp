@@ -24,8 +24,7 @@ class Cards extends StatelessWidget {
         child: InkWell(
             splashColor: Colors.blue.withAlpha(30),
             onTap: () {
-              Get.toNamed(
-                  '/review_detail/${context.read<ReviewStorage>().reviewId}',
+              Get.toNamed('/review_detail',
                   arguments: info);
             },
             child: SizedBox(

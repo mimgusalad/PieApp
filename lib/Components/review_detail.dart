@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pie/DTO/review.dart';
 import 'package:provider/provider.dart';
 import '../Storage/review_storage.dart' as store;
 import '../Storage/favorite_storage.dart';
+
 
 class Page extends StatefulWidget {
   Page({super.key});
@@ -14,7 +16,7 @@ class Page extends StatefulWidget {
 class _PageState extends State<Page> {
   var likeIcon = [const Icon(Icons.favorite_outline), const Icon(Icons.favorite_outlined)];
   var liked;
-  final form = Get.arguments;
+  final Review review = Get.arguments;
 
   initState(){
     super.initState();
@@ -22,7 +24,7 @@ class _PageState extends State<Page> {
   }
 
   Future<void> fetchData() async {
-    bool isFavorite = await context.read<FavoriteStorage>().checkIfFavorite(form['review_article']['articleNo']);
+    bool isFavorite = await context.read<FavoriteStorage>().checkIfFavorite(review.article.articleNo);
     setState(() {
       liked = isFavorite ? 1 : 0;
     });
@@ -35,10 +37,9 @@ class _PageState extends State<Page> {
   }
   @override
   Widget build(BuildContext context) {
-    final review = form['review_article'];
     return Scaffold(
       appBar: AppBar(),
-      body: Text(review['contentTitle']??'제목없음'),
+      body: Text(review.article.contentTitle??'제목없음'),
       bottomNavigationBar: BottomAppBar(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -46,7 +47,7 @@ class _PageState extends State<Page> {
             Text('즐겨찾기'),
             IconButton(onPressed: (){
               setLike();
-              context.read<FavoriteStorage>().setFavorite(review['articleNo']);
+              context.read<FavoriteStorage>().setFavorite(review.article.articleNo);
             }, icon: liked != null ? likeIcon[liked] : likeIcon[0]),
           ],
         ),
