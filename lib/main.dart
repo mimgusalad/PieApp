@@ -1,11 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:pie/Kakao/view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'package:get/get.dart';
 import './style.dart' as style;
-import 'Kakao/kakao_login.dart';
 import 'Storage/image_storage.dart';
 import 'Storage/review_storage.dart';
 import 'Storage/succ_storage.dart';
@@ -19,7 +16,6 @@ import 'Pages/message_list.dart' as message;
 import 'Components/message.dart';
 import 'Components/review_detail.dart' as reviewDetail;
 import 'Components/succ_detail.dart' as succDetail;
-import 'package:http/http.dart' as http;
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'Storage/url.dart';
 
@@ -27,8 +23,8 @@ import 'Storage/url.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   KakaoSdk.init(
-    nativeAppKey: '${NATIVE_APP_KEY}',
-    javaScriptAppKey: '${JAVASCRIPT_APP_KEY}',
+    nativeAppKey: NATIVE_APP_KEY,
+    javaScriptAppKey: JAVASCRIPT_APP_KEY,
   );
 
   runApp(
@@ -39,7 +35,6 @@ void main() async {
           ChangeNotifierProvider(create: (c) => ImageStorage()),
           ChangeNotifierProvider(create: (c) => FavoriteStorage()),
           ChangeNotifierProvider(create: (c) => UserStorage()),
-          ChangeNotifierProvider(create: (c)=> MainViewModel(KakaoLogin())),
         ],
         child: GetMaterialApp(
           theme: style.theme,

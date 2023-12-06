@@ -11,6 +11,20 @@ class MainViewModel extends ChangeNotifier {
   bool isLogin = false;
   User? user;
   int? userId=16;
+  bool disposed = false;
+
+  @override
+  dispose() {
+    disposed = true;
+    super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (!disposed) {
+      super.notifyListeners();
+    }
+  }
 
   MainViewModel(this._socialLogin);
 
@@ -64,6 +78,7 @@ class MainViewModel extends ChangeNotifier {
   Future<bool> logout() async {
     try {
       await UserApi.instance.unlink();
+      isLogin = false;
       return true;
     } catch (error) {
       return false;

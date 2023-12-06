@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pie/DTO/succ.dart';
 import 'package:provider/provider.dart';
 import '../Storage/succ_storage.dart';
 import '../Storage/url.dart';
@@ -10,8 +11,8 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var info = Get.arguments;
-    var writer = info['userInfo'];
+    SuccArticle info = Get.arguments;
+    var writer = info.user;
     debugPrint('info: $info');
     debugPrint('writer: $writer');
     return Scaffold(
@@ -28,9 +29,9 @@ class Page extends StatelessWidget {
           child: Text('연락하기!'),
           onPressed: () {
             // 작성자와 채팅하기
-            context.read<SuccStorage>().setChatChannelUrl('seohyunbin1@naver.com', writer['email']);
+            context.read<SuccStorage>().setChatChannelUrl('dakjijisalad@gmail.com', writer.email);
             debugPrint('');
-            Get.toNamed('/group_channel/${Provider.of<SuccStorage>(context, listen: false).chatChannelUrl}', arguments: writer['nickname']);
+            Get.toNamed('/group_channel/${Provider.of<SuccStorage>(context, listen: false).chatChannelUrl}', arguments: writer.name);
             },
         ),
       )

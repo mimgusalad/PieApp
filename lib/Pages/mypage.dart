@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:pie/Kakao/kakao_login.dart';
 import 'package:pie/Kakao/view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import '../Components/card.dart' as cards;
 import '../Storage/review_storage.dart' as store;
 import '../Storage/url.dart';
-import '../Storage/user_storage.dart';
 
 class Page extends StatefulWidget {
   Page({super.key});
@@ -16,39 +12,46 @@ class Page extends StatefulWidget {
   @override
   State<Page> createState() => _PageState();
 }
-
-class _PageState extends State<Page> {
+class _PageState extends State<Page> with AutomaticKeepAliveClientMixin {
   final viewModel = MainViewModel(KakaoLogin());
 
+  Future<void> _refreshState() async {
+    setState(() {}); // Trigger a rebuild
+  }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => MainViewModel(KakaoLogin()),
-        child: Consumer<MainViewModel>(
+      key: UniqueKey(),
+      create: (_) => viewModel,
+      child: Consumer<MainViewModel>(
         builder: (context, viewModel, _) {
-      return viewModel.isLogin
-        ? Scaffold(
-      appBar: AppBar(
-        title: const Text('마이페이지'),
-      ),
-      body: RefreshIndicator(onRefresh: () { // 새로고침
-        return context.read<store.ReviewStorage>().getMyReviews(viewModel.userId!);
-      },
-        child: ListView(
-          children: [
-            ProfileHeader(viewModel: viewModel),
-            const Divider(
-              height: 10,
+          return viewModel.isLogin
+              ? Scaffold(
+            appBar: AppBar(
+              title: const Text('마이페이지'),
             ),
-            Cards(),
-          ],
-        ),
+            body: RefreshIndicator(
+              onRefresh: _refreshState,
+              child: ListView(
+                children: [
+                  ProfileHeader(viewModel: viewModel, refresh: _refreshState),
+                  const Divider(
+                    height: 10,
+                  ),
+                  Cards(),
+                ],
+              ),
+            ),
+          )
+              : LoginPage(viewModel: viewModel);
+        },
       ),
-    )
-        : LoginPage(viewModel: viewModel);
-    }));
+    );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 
@@ -62,8 +65,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   void _handleLogin() async {
-    await widget.viewModel.login();
-    await widget.viewModel.sendbirdLogin();
+    if(mounted){
+      await widget.viewModel.login();
+      await widget.viewModel.sendbirdLogin();
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -76,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-Widget ProfileHeader({required MainViewModel viewModel}) {
+Widget ProfileHeader({required MainViewModel viewModel, required Function refresh}) {
   return Center(
     child: Column(
       children: [
@@ -93,10 +98,15 @@ Widget ProfileHeader({required MainViewModel viewModel}) {
         const SizedBox(
           height: 10,
         ),
-        Text(viewModel.user?.kakaoAccount?.profile?.nickname ?? 'null', style: TextStyle(fontSize: 20)),
-        ElevatedButton(onPressed:() async {
-          await viewModel.logout();
-        }, child: Text('로그아웃')),
+        Text(viewModel.user?.kakaoAccount?.profile?.nickname ?? 'null', style: const TextStyle(fontSize: 20)),
+        ElevatedButton(
+          onPressed: () async {
+            await viewModel.logout();
+            // Refresh the state after logout
+            refresh();
+          },
+          child: const Text('로그아웃'),
+        ),
         const Divider(
           height: 10,
         ),
