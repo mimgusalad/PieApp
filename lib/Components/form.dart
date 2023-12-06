@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kpostal/kpostal.dart';
 import 'package:provider/provider.dart';
 import '../Storage/image_storage.dart';
+import 'package:intl/intl.dart';
 
 class FormButton extends StatelessWidget {
-  FormButton({super.key});
+  const FormButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class FormButton extends StatelessWidget {
 }
 
 class FormPage extends StatefulWidget {
-  FormPage({super.key});
+  const FormPage({super.key});
 
   @override
   State<FormPage> createState() => _FormPageState();
@@ -32,6 +35,14 @@ class _FormPageState extends State<FormPage> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
   final _addressController = TextEditingController();
+  final _addressDetailController = TextEditingController();
+  final _houseTypeController = TextEditingController();
+  final _paymentController = TextEditingController();
+  final _depositController = TextEditingController();
+  final _utilityController = TextEditingController();
+  final _livingYearController = TextEditingController();
+  final _feeController = TextEditingController();
+  final _ratingController = TextEditingController();
   final _picker = ImagePicker();
 
   final List<XFile?> _pickedImages = [];
@@ -101,6 +112,154 @@ class _FormPageState extends State<FormPage> {
                 maxLines: 5,
                 keyboardType: TextInputType.multiline,
               )),
+          Text('주택 유형',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              )),
+          SizedBox(
+              width: 300,
+              child: TextField(
+                  controller: _houseTypeController,
+                  decoration: const InputDecoration(
+                    hintText: '원룸, 투룸, 아파트, 오피스텔 등',
+                    border: OutlineInputBorder(),
+                  ))),
+          Text('전월세',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              )),
+          SizedBox(
+              width: 300,
+              child: TextField(
+                  controller: _paymentController,
+                  decoration: const InputDecoration(
+                    hintText: '전세, 월세, 사글세, 연세, 등',
+                    border: OutlineInputBorder(),
+                  ))),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      '보증금',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 300,
+                      child: TextField(
+                        controller: _depositController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          suffix: Text('만원'),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      '월세',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 300,
+                      child: TextField(
+                        controller: _feeController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: const InputDecoration(
+                          suffix: Text('만원'),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      '관리비',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 300,
+                      child: TextField(
+                        controller: _utilityController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: const InputDecoration(
+                          suffix: Text('만원'),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          Text('입주년도',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              )),
+          SizedBox(
+              width: 300,
+              child: TextField(
+                  controller: _livingYearController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  decoration: const InputDecoration(
+                    hintText: 'YYYY',
+                    border: OutlineInputBorder(),
+                  ))),
+          Text('평점',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              )),
+          Center(
+            child: RatingBar.builder(
+              initialRating: 0,
+              minRating: 0,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+              itemBuilder: (context, _) => const Icon(
+                Icons.star,
+                color: Colors.amber,
+              ),
+              onRatingUpdate: (rating) {
+                print(rating);
+              },
+            ),
+          ),
+
+          const SizedBox(
+            height: 20,
+          ),
         ],
       ),
       bottomNavigationBar: BottomAppBar(

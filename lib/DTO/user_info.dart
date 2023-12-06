@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class UserInfo{
   String? name;
   String? email;
