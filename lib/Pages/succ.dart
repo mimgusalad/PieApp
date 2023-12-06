@@ -11,7 +11,7 @@ class Page extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('승계 글 목록')
+          title: const Text('승계 글 목록')
       ),
       body: RefreshIndicator( // pull to refresh
         onRefresh: () {
@@ -22,7 +22,7 @@ class Page extends StatelessWidget {
         itemBuilder:(context, index) {
           return cards.SuccCards(index: index, info: context.watch<SuccStorage>().articles[index]);
         }, separatorBuilder: (BuildContext context, int index) {return const SizedBox(height: 8);  },)),
-      floatingActionButton: form.FormButton()
+      floatingActionButton: const form.FormButton()
     );
   }
 }

@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import '../DTO/form.dart';
 import 'url.dart';
 
 var dio = Dio();
@@ -19,16 +19,27 @@ class ImageStorage extends ChangeNotifier{
     notifyListeners();
   }
 
-  void submitImage() async {
-    FormData _formData;
-    final List<MultipartFile> img_list = pickedImages.map((e) => MultipartFile.fromFileSync(e!.path)).toList();
-    dio.options.contentType = 'multipart/form-data';
-    _formData = FormData.fromMap({
-      'images': img_list,
-    });
-    var res = await dio.post('$BASEURL/checkpost2', data: _formData);
+  void clearImage(){
     pickedImages.clear();
-    //debugPrint('submitImage() called, res: $res');
     notifyListeners();
+  }
+
+  Future<void> submitFormToServer(FormDTO formDTO) async {
+    print('submitFormToServer');
+    print(formDTO.toJson());
+    Dio dio = new Dio();
+    try{
+      Response res = await dio.post(
+        '$BASEURL/form',
+        data: formDTO.toJson(),
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+    }catch(e){
+      print(e);
+    }
   }
 }

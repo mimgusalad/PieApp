@@ -12,7 +12,7 @@ class Page extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text('리뷰')
+            title: const Text('리뷰')
         ),
         body: RefreshIndicator( // pull to refresh
           onRefresh: () {
@@ -29,7 +29,7 @@ class Page extends StatelessWidget {
           },
           ),
         ),
-        floatingActionButton: form.FormButton()
+        floatingActionButton: const form.FormButton()
     );
   }
 }

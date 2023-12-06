@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:provider/provider.dart';
 import '../DTO/review.dart';
 import '../DTO/succ.dart';
-import '../Storage/review_storage.dart';
 import '../Storage/url.dart';
 
 class Cards extends StatelessWidget {

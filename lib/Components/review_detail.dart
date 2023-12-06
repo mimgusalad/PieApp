@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pie/DTO/review.dart';
 import 'package:provider/provider.dart';
-import '../Storage/review_storage.dart' as store;
 import '../Storage/favorite_storage.dart';
 import '../Storage/url.dart';
 
