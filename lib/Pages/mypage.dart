@@ -35,11 +35,11 @@ class _PageState extends State<Page> with AutomaticKeepAliveClientMixin {
               onRefresh: _refreshState,
               child: ListView(
                 children: [
-                  ProfileHeader(viewModel: viewModel, refresh: _refreshState),
+                  ProfileHeader(viewModel: viewModel),
                   const Divider(
                     height: 10,
                   ),
-                  Cards(),
+                  Cards(context),
                 ],
               ),
             ),
@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-Widget ProfileHeader({required MainViewModel viewModel, required Function refresh}) {
+Widget ProfileHeader({required MainViewModel viewModel}) {
   return Center(
     child: Column(
       children: [
@@ -103,7 +103,6 @@ Widget ProfileHeader({required MainViewModel viewModel, required Function refres
           onPressed: () async {
             await viewModel.logout();
             // Refresh the state after logout
-            refresh();
           },
           child: const Text('로그아웃'),
         ),
@@ -116,15 +115,14 @@ Widget ProfileHeader({required MainViewModel viewModel, required Function refres
   );
 }
 
-Widget Cards() {
+Widget Cards(BuildContext context) {
   return ListView.separated(
     itemBuilder: (context, index) {
       return cards.Cards(
           index: index,
           info: context.watch<store.ReviewStorage>().myReviews[index]);
     },
-    itemCount: 0,
-    //context.watch<store.ReviewStorage>().myReviews.length,
+    itemCount: context.watch<store.ReviewStorage>().myReviews.length,
     shrinkWrap: true,
     physics: const NeverScrollableScrollPhysics(),
     separatorBuilder: (context, index) {

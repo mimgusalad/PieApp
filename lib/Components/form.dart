@@ -7,9 +7,11 @@ import 'package:kpostal/kpostal.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
 import '../DTO/form.dart';
+import '../DTO/review.dart';
 import '../Kakao/kakao_login.dart';
 import '../Storage/image_storage.dart';
 import '../Kakao/view_model.dart';
+import '../Storage/user_storage.dart';
 
 class FormButton extends StatelessWidget {
   const FormButton({super.key});
@@ -51,7 +53,6 @@ class _FormPageState extends State<FormPage> {
   final _picker = ImagePicker();
 
   late List<XFile?> _pickedImages = [];
-  final FormDTO _formDTO = FormDTO(imgList: []);
   //final viewModel = MainViewModel(KakaoLogin());
 
   @override
@@ -297,24 +298,25 @@ class _FormPageState extends State<FormPage> {
           // Use the temporary variable to create MultipartFile list
           List<MultipartFile> img_list = tempImages.map((e) => MultipartFile.fromFileSync(e!.path)).toList();
 
-          _formDTO.setImgList(img_list);
-          _formDTO.setAddress(_addressController.text);
-          _formDTO.setAddressDetail(_addressDetailController.text);
-          _formDTO.setContentTitle(_titleController.text);
-          _formDTO.setContentText(_contentController.text);
-          _formDTO.setHouseType(_houseTypeController.text);
-          _formDTO.setPayment(_paymentController.text);
-          _formDTO.setUtility(_utilityController.text);
-          _formDTO.setLivingYear(_livingYearController.text);
-          _formDTO.setRating(_rating);
-          _formDTO.setDeposit(int.parse(_depositController.text));
-          _formDTO.setFee(int.parse(_feeController.text));
-          _formDTO.setUserId(16);
-          _formDTO.setLatitude(_latitude);
-          _formDTO.setLongitude(_longitude);
-          context.read<ImageStorage>().submitFormToServer(_formDTO);
+          // Create a Article object
+          Article article = Article(
+            contentTitle: _titleController.text,
+            contentText: _contentController.text,
+            address: _addressController.text,
+            addressDetail: _addressDetailController.text,
+            houseType: _houseTypeController.text,
+            payment: _paymentController.text,
+            deposit: int.parse(_depositController.text),
+            fee: int.parse(_feeController.text),
+            utility: _utilityController.text,
+            livingYear: _livingYearController.text,
+            rating: _rating,
+            userId: 16
+          );
+          //print(article.toJson());
+
+          Future<bool> check = context.read<ImageStorage>().submitFormToServer(article);
           Navigator.pop(context);
-          context.read<ImageStorage>().clearImage();
         },
         child: const Text('작성 완료'),
       )),

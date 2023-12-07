@@ -19,8 +19,8 @@ class Review{
 }
 
 class Article {
-  final int articleNo;      //review number
-  final int userId;         // 리뷰 작성 user Id
+  final int? articleNo;      //review number
+  final int? userId;         // 리뷰 작성 user Id
   final String? houseType;   // 원룸, 투룸 등 정보
   final String? payment;     // 전세 혹은 월세
   final String? utility;     // 관리비
@@ -39,24 +39,24 @@ class Article {
   final int? addressId;
 
   Article({
-    required this.articleNo,
-    required this.userId,
-    required this.houseType,
-    required this.payment,
-    required this.utility,
-    required this.livingYear,
-    required this.rating,
-    required this.deposit,
-    required this.fee,
-    required this.address,
-    required this.addressDetail,
-    required this.likedCnt,
-    required this.contentTitle,
-    required this.contentText,
-    required this.regdate,
-    required this.certification,
-    required this.viewCnt,
-    required this.addressId,
+    this.articleNo,
+    this.userId,
+    this.houseType,
+    this.payment,
+    this.utility,
+    this.livingYear,
+    this.rating,
+    this.deposit,
+    this.fee,
+    this.address,
+    this.addressDetail,
+    this.likedCnt,
+    this.contentTitle,
+    this.contentText,
+    this.regdate,
+    this.certification,
+    this.viewCnt,
+    this.addressId,
   });
 
   factory Article.fromJson(Map<String, dynamic> json){
@@ -82,8 +82,104 @@ class Article {
     );
   }
 
+  set articleNo(int? value) {
+    articleNo = value;
+  }
+
+  set userId(int? value) {
+    userId = value;
+  }
+
+  set houseType(String? value) {
+    houseType = value;
+  }
+
+  set payment(String? value) {
+    payment = value;
+  }
+
+  set utility(String? value) {
+    utility = value;
+  }
+
+  set livingYear(String? value) {
+    livingYear = value;
+  }
+
+  set rating(double? value) {
+    rating = value;
+  }
+
+  set deposit(int? value) {
+    deposit = value;
+  }
+
+  set fee(int? value) {
+    fee = value;
+  }
+
+  set address(String? value) {
+    address = value;
+  }
+
+  set addressDetail(String? value) {
+    addressDetail = value;
+  }
+
+  set likedCnt(int? value) {
+    likedCnt = value;
+  }
+
+  set contentTitle(String? value) {
+    contentTitle = value;
+  }
+
+  set contentText(String? value) {
+    contentText = value;
+  }
+
+  set regdate(String? value) {
+    regdate = value;
+  }
+
+  set certification(int? value) {
+    certification = value;
+  }
+
+  set viewCnt(int? value) {
+    viewCnt = value;
+  }
+
+  set addressId(int? value) {
+    addressId = value;
+  }
+
   @override
   String toString() {
     return 'articleNo: $articleNo, userId: $userId, houseType: $houseType, payment: $payment, utility: $utility, livingYear: $livingYear, rating: $rating, deposit: $deposit, fee: $fee, address: $address, addressDetail: $addressDetail, likedCnt: $likedCnt, contentTitle: $contentTitle, contentText: $contentText, regdate: $regdate, certification: $certification, viewCnt: $viewCnt, addressId: $addressId';
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'articleNo': articleNo,
+      'userId': userId,
+      'houseType': houseType,
+      'payment': payment,
+      'utility': utility,
+      'livingYear': livingYear,
+      'rating': rating,
+      'deposit': deposit,
+      'fee': fee,
+      'address': address,
+      'addressDetail': addressDetail,
+      'likedCnt': likedCnt,
+      'contentTitle': contentTitle,
+      'contentText': contentText,
+      'regdate': regdate,
+      'certification': certification,
+      'viewCnt': viewCnt,
+      'addressId': addressId,
+    };
+  }
+
 }

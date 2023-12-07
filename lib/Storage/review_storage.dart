@@ -32,7 +32,7 @@ class ReviewStorage extends ChangeNotifier{
 
   late List<Review> myReviews;// 내가 쓴 리뷰글
   getMyReviews(myId) async{
-    var res = await http.get(Uri.parse('$BASEURL/reviews/my?userId=$myId')); // 대충 아이디 하드코딩 박재현
+    var res = await http.get(Uri.parse('$BASEURL/reviews/my?userId=16')); // 대충 아이디 하드코딩 박재현
     List json = jsonDecode(utf8.decode(res.bodyBytes));
     myReviews = json.map<Review>((json) => Review.fromJson(json)).toList();
     notifyListeners();

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pie/Kakao/kakao_login.dart';
 import 'package:provider/provider.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'package:get/get.dart';
 import './style.dart' as style;
+import 'Kakao/view_model.dart';
 import 'Storage/image_storage.dart';
 import 'Storage/review_storage.dart';
 import 'Storage/succ_storage.dart';
@@ -35,6 +37,7 @@ void main() async {
           ChangeNotifierProvider(create: (c) => ImageStorage()),
           ChangeNotifierProvider(create: (c) => FavoriteStorage()),
           ChangeNotifierProvider(create: (c) => UserStorage()),
+          ChangeNotifierProvider(create: (_) => MainViewModel(KakaoLogin())),
         ],
         child: GetMaterialApp(
           theme: style.theme,
@@ -46,7 +49,7 @@ void main() async {
             // GetPage(name: '/succ', page: ()=> succ.Page()),
             // GetPage(name: '/message', page: ()=> message.ChannelList()),
             GetPage(name: '/succ_detail',
-                page: () => const succDetail.Page()
+                page: () => succDetail.Page()
             ),
             GetPage(
                 name: '/review_detail',
@@ -82,6 +85,7 @@ class _MyAppState extends State<MyApp> {
     context.read<ReviewStorage>().getReviews();
     context.read<SuccStorage>().getArticles();
     context.read<FavoriteStorage>().getMyFavorite();
+    context.read<ReviewStorage>().getMyReviews(16);
     SendbirdChat.init(appId: APP_ID);
   }
 
